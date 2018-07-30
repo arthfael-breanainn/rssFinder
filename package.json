@@ -1,0 +1,32 @@
+{
+  "name": "rss_finder",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "rss-finder": "^2.0.5",
+    "request": "^2.87.0",
+    "cheerio": "^1.0.0-rc.2",
+    "lodash": "^4.17.10"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "chai-as-promised": "^7.1.1",
+    "eslint": "^5.2.0",
+    "eslint-config-airbnb": "^17.0.0",
+    "eslint-plugin-import": "^2.13.0",
+    "eslint-plugin-jsx-a11y": "^6.1.1",
+    "eslint-plugin-react": "^7.10.0",
+    "istanbul": "^0.4.5",
+    "mocha": "^5.2.0",
+    "karma-nyan-reporter": "^0.2.5",
+    "proxyquire": "^2.0.1",
+    "sinon": "^6.1.3"
+  },
+  "scripts": {
+    "eslint": "./node_modules/.bin/eslint --ignore-pattern '*.spec.js' --ignore-pattern '**/node_modules/*'  --ignore-pattern '**/test/*' --ignore-pattern '**/coverage/*' ./",
+    "test": "npm run eslint && ./node_modules/istanbul/lib/cli.js cover -x '**/*.spec.js' -x '**/test/**' -x '**/tests/**' ./node_modules/mocha/bin/_mocha $(find . -name '*.spec.js' -not -path '**/node_modules/*') --report lcovonly -- -R nyan"
+  },
+  "author": "Laurent Bauchet",
+  "license": "MIT"
+}
