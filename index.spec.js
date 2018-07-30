@@ -25,7 +25,6 @@
 const chai = require('chai');
 const chaiAsPromised = require('chai-as-promised');
 const sinon = require('sinon');
-const fs = require('fs');
 const index = require('./index');
 const rssFinder = require('./rssFinder');
 const links = require('./_testsAssets/links.json');
