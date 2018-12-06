@@ -29,9 +29,9 @@ const proxyquire = require('proxyquire').noCallThru().noPreserveCache();
 const fs = require('fs');
 const _ = require('lodash');
 const rssFinder = require('./rssFinder');
-const response = require('./_testsAssets/response.json');
-const links = require('./_testsAssets/links.json');
-const urls = require('./_testsAssets/urls.json');
+const response = require('../_testsAssets/response.json');
+const links = require('../_testsAssets/links.json');
+const urls = require('../_testsAssets/urls.json');
 
 chai.use(chaiAsPromised);
 const { expect } = chai;

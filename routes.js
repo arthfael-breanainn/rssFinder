@@ -22,20 +22,15 @@
 
 'use strict';
 
-const chai = require('chai');
-const chaiAsPromised = require('chai-as-promised');
-const sinon = require('sinon');
-const proxyquire = require('proxyquire').noCallThru().noPreserveCache();
-const supertest = require('supertest');
-const express = require('express');
-const fs = require('fs');
-const { appRouter } = require('./routes');
-const mainHandler = require('./src/main');
+const { handler } = require('./src/main');
 
-chai.use(chaiAsPromised);
-const { expect } = chai;
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0; // need to disable TLS rejection
+const appRouter = (app) => {
+  app.get('/', (req, res) => {
+    if (!req.query.url || typeof req.query.url !== 'string') return res.status(500).send();
+    return handler(req.query.url)
+      .then(resp => res.status(200).json(resp))
+      .catch(() => res.status(500).send());
+  });
+};
 
-describe('module dataCrawler : index', () => {
-
-});
+module.exports = { appRouter };

@@ -1,0 +1,48 @@
+{
+  "rss": {
+    "count": 1,
+    "value": [
+      "https://www.lemonde.fr/livres/rss_full.xml"
+    ]
+  },
+  "errors": {
+    "count": 1,
+    "value": [
+      {
+        "name": "HTTPError",
+        "host": "www.lemonde.fr",
+        "hostname": "www.lemonde.fr",
+        "method": "GET",
+        "path": "/groupelemonde.solution.weborama.fr/fcgi-bin/dispatch.fcgi?a.A=cl&a.si=2488&a.te=1323&a.ra=[RANDOM]&g.lu=https://anglais.lemonde.fr/test-anglais",
+        "protocol": "https:",
+        "url": "https://www.lemonde.fr/groupelemonde.solution.weborama.fr/fcgi-bin/dispatch.fcgi?a.A=cl&a.si=2488&a.te=1323&a.ra=[RANDOM]&g.lu=https://anglais.lemonde.fr/test-anglais",
+        "statusCode": 404,
+        "statusMessage": "Not Found",
+        "headers": {
+          "cache-control": "max-age=300",
+          "content-type": "text/html; charset=UTF-8",
+          "x-varnish2": "varnish2.lemonde.fr 894460950",
+          "x-mia-filter": "mia-serveurs",
+          "x-age": "712",
+          "x-varnish1": "varnish1.lemonde.fr 579205525 588387927",
+          "content-encoding": "gzip",
+          "content-length": "12719",
+          "accept-ranges": "bytes",
+          "date": "Thu, 25 Oct 2018 08:37:59 GMT",
+          "via": "1.1 varnish",
+          "age": "0",
+          "connection": "close",
+          "x-served-by": "cache-cdg20720-CDG",
+          "x-cache": "MISS",
+          "x-cache-hits": "0",
+          "x-timer": "S1540456679.133325,VS0,VE8",
+          "vary": "Accept-Encoding",
+          "set-cookie": [
+            "prog-deploy=96; expires=Tue, 23 Apr 2019 08:37:59 GMT; path=/; domain=.lemonde.fr;",
+            "prog-deploy2=20; expires=Tue, 23 Apr 2019 08:37:59 GMT; path=/; domain=.lemonde.fr;"
+          ]
+        }
+      }
+    ]
+  }
+}

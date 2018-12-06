@@ -22,20 +22,31 @@
 
 'use strict';
 
-const chai = require('chai');
-const chaiAsPromised = require('chai-as-promised');
-const sinon = require('sinon');
-const proxyquire = require('proxyquire').noCallThru().noPreserveCache();
-const supertest = require('supertest');
-const express = require('express');
-const fs = require('fs');
-const { appRouter } = require('./routes');
-const mainHandler = require('./src/main');
+const rssFinder = require('./rssFinder');
 
-chai.use(chaiAsPromised);
-const { expect } = chai;
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0; // need to disable TLS rejection
-
-describe('module dataCrawler : index', () => {
-
+const handler = url => new Promise((resolve, reject) => {
+  console.time('RssSearching');
+  rssFinder.fetchAllLinks(url)
+    .then(links => rssFinder.keepSameRootDomainLink(url, links))
+    .then((urls) => {
+      // dedupe urls
+      const dedupedUrls = Array.from(new Set(urls));
+      return rssFinder.keepOnlyRssUrl(rssFinder.fetchAllRss, dedupedUrls);
+    })
+    .then((res) => {
+      // dedupe RSS
+      const allRss = Array.from(new Set(res.allRss));
+      console.timeEnd('RssSearching');
+      console.log(JSON.stringify({ rss: { count: allRss.length, value: allRss }, errors: { count: res.allErrors.length, value: res.allErrors } }));
+      return resolve({ rss: { count: allRss.length, value: allRss }, errors: { count: res.allErrors.length, value: res.allErrors } });
+    })
+    .catch((e) => {
+      console.error('fail', e);
+      console.timeEnd('RssSearching');
+      return reject(e);
+    });
 });
+
+module.exports = {
+  handler,
+};

@@ -14,9 +14,14 @@ I wrote this script to test the coroutines with a Promises generator.
 
 The script is designed to be called from command line
 
-To launch it :
+To launch it in cmdLine :
 ```
-node -e 'require("./index").handler("<your.website.url>")'
+node -e 'require("./src/main").handler("<your.website.url>")'
+```
+
+To launch it as an API server :
+```
+npm start
 ```
 
 ## Input

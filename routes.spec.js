@@ -36,6 +36,62 @@ chai.use(chaiAsPromised);
 const { expect } = chai;
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = 0; // need to disable TLS rejection
 
-describe('module dataCrawler : index', () => {
+describe('module dataCrawler : routes', () => {
+  it('should have a function appRouter', () => {
+    expect(appRouter).to.exist;
+    expect(typeof appRouter).to.equal('function');
+  });
 
+  let app;
+  let request;
+  let handler;
+  let appRouterWithStubs;
+
+  beforeEach(() => {
+    handler = sinon.stub(mainHandler, 'handler');
+    app = express();
+    appRouterWithStubs = proxyquire('./routes', {
+      './src/main': {
+        handler,
+      },
+    });
+    appRouterWithStubs.appRouter(app);
+    request = supertest(app);
+  });
+
+  afterEach(() => {
+    handler.restore();
+  });
+
+  it('GET should respond with a 500 if params query misformated', (done) => {
+    request
+      .get('/')
+      .expect(500, (err, res) => {
+        expect(err).to.not.be.ok;
+        expect(res.body).to.deep.equal({});
+        done();
+      });
+  });
+
+  it('GET should respond with a 500 if handler throw an error', (done) => {
+    handler.rejects(new Error('test handler error'));
+    request
+      .get('/?url=https://www.test.fr')
+      .expect(500, (err, res) => {
+        expect(err).to.not.be.ok;
+        expect(res.body).to.deep.equal({});
+        done();
+      });
+  });
+
+  it('should respond with 200', (done) => {
+    handler.resolves(fs.readFileSync('./_testsAssets/rssResponse.json', 'utf8'));
+    request
+      .get('/?url=https://www.test.fr')
+      .expect(200, (err, res) => {
+        expect(err).to.not.be.ok;
+        expect(res.body).to.deep.equal(fs.readFileSync('./_testsAssets/rssResponse.json', 'utf8'));
+        done();
+      });
+  });
 });

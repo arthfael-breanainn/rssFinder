@@ -22,31 +22,28 @@
 
 'use strict';
 
-const rssFinder = require('./rssFinder');
+const express = require('express');
+const bodyParser = require('body-parser');
+const https = require('https');
+const fs = require('fs');
+const { appRouter } = require('./routes');
 
-const handler = url => new Promise((resolve, reject) => {
-  console.time('RssSearching');
-  rssFinder.fetchAllLinks(url)
-    .then(links => rssFinder.keepSameRootDomainLink(url, links))
-    .then((urls) => {
-      // dedupe urls
-      const dedupedUrls = Array.from(new Set(urls));
-      return rssFinder.keepOnlyRssUrl(rssFinder.fetchAllRss, dedupedUrls);
-    })
-    .then((res) => {
-      // dedupe RSS
-      const allRss = Array.from(new Set(res.allRss));
-      console.timeEnd('RssSearching');
-      console.log(JSON.stringify({ rss: { count: allRss.length, value: allRss }, errors: { count: res.allErrors.length, value: res.allErrors } }));
-      return resolve({ rss: allRss, errors: res.allErrors });
-    })
-    .catch((e) => {
-      console.error('fail', e);
-      console.timeEnd('RssSearching');
-      return reject(e);
-    });
-});
+const app = express();
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+appRouter(app);
+
+const start = () => {
+  https
+    .createServer({
+      key: fs.readFileSync('./certificate/key.pem'),
+      cert: fs.readFileSync('./certificate/cert.pem')
+    }, app)
+    .listen(8000, (err) => { if (err) throw new Error(err); });
+};
 
 module.exports = {
-  handler,
+  start,
 };
