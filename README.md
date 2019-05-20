@@ -33,7 +33,7 @@ The script needs a valid url to work.
 The script returns an object composed as follow :
 ```
 {
-  rss: [] // array composed with all deduped rss feeds found
+  rss: [], // array composed with all deduped rss feeds found
   errors: [] // array composed with all urls not processed
 }
 ```
